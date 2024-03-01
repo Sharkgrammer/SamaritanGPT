@@ -7,11 +7,11 @@
       <div :class="getShove()" class="h-14">
         <h1 class="text-5xl uppercase font-bold h-12">{{ output }}</h1>
 
-        <div class="border-2 border-black mx-1" :class="{'w-20' : waiting} "/>
+        <div class="border-2 border-black mx-1" :class="{'w-20' : waiting}"/>
       </div>
 
       <div :key="speaking" class="h-14">
-        <img src="@/assets/samaritan.svg" class="h-10" :class="{
+        <img src="@/assets/img/samaritan.svg" class="h-10" :class="{
           'animate-fade' : speaking,
           'animate-gentle-fade' : !speaking
         } "/>
@@ -19,7 +19,8 @@
 
 
       <div class="pt-10 h-14">
-        <input v-if="waiting" type="text" placeholder="Command" v-model="textValue" @keypress.enter="sendText"
+        <input v-if="waiting" id="textbox" type="text" placeholder="Command" v-model="textValue"
+               @keypress.enter="sendText"
                class="h-10 animate-fade-in box"/>
       </div>
 
@@ -34,6 +35,7 @@
 <script>
 
 import OpenAI from "openai";
+import {getText} from "@/assets/js/data";
 
 // TODO temp solution
 let key = process.env.VUE_APP_OPENAI_API_KEY;
@@ -66,7 +68,11 @@ export default {
       this.startSpeaking();
       this.speak(this.words[this.wordsIdx++]);
 
-      this.speakTimeout(this);
+      if (this.words.length !== this.wordsIdx) {
+        this.speakTimeout(this);
+      } else {
+        this.stopSpeakingTimeout(this);
+      }
     },
     parseWords(sentence) {
       let temp = sentence.split(" ");
@@ -108,8 +114,6 @@ export default {
         pad = "pl-20";
       }
 
-      // console.log(len + " " + pad);
-
       return pad;
     },
     startSpeaking() {
@@ -132,17 +136,26 @@ export default {
     },
     async sendText() {
       console.log(this.textValue);
+      document.getElementById('textbox').style.animation = "fadeOut 1s";
 
-      // TODO validation
+      if (this.textValue < 0) {
+        return;
+      }
 
-      let wrapper = "answer the following in 10 words or less: " + this.textValue;
+      let check = getText(this.textValue);
+
+      if (check !== null) {
+        this.run(check);
+        return;
+      }
+
+      let wrapper = "answer the following in 12 words or less: " + this.textValue;
 
       const completion = await openai.chat.completions.create({
         messages: [{role: "user", content: wrapper}],
         model: "gpt-3.5-turbo",
         max_tokens: 50,
       });
-
 
       this.run(completion.choices[0].message.content);
     }
