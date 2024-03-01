@@ -53,12 +53,9 @@ export default {
     openPopup() {
       this.forceWait = true;
       this.showPopup = true;
-      console.log(this.forceWait);
     },
     closePopup() {
       this.forceWait = this.showPopup = false;
-      console.log(this.forceWait);
-
     }
   }
 }

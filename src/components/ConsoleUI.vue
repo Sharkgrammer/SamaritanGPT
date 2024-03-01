@@ -16,7 +16,7 @@
 
   <div class="pt-10 h-14">
     <input v-if="waiting && !wait" id="textbox" type="text" placeholder="Command" v-model="textValue"
-           @keypress.enter="sendText"
+           @keypress.enter="sendText" :disabled="disabled"
            class="h-10 animate-fade-in box"/>
   </div>
 
@@ -49,11 +49,10 @@ export default {
       speaking: false,
       waiting: false,
       textValue: "",
+      disabled: false,
     }
   },
   mounted() {
-    console.log(utils.getKey(this));
-
     if (!this.wait) {
       this.run("what are your commands?")
     } else {
@@ -77,7 +76,7 @@ export default {
       let temp = sentence.split(" ");
       let lastWord = temp[temp.length - 1];
 
-      this.words = sentence.replace(/[.,?@'#]/g, '').split(" ");
+      this.words = sentence.replace(/[.,?@'#\-=+]/g, '').split(" ");
 
       if (lastWord.includes("?")) {
         this.words.push("?");
@@ -131,14 +130,16 @@ export default {
       this.waiting = true;
       this.words = [];
       this.wordsIdx = 0;
+      this.disabled = false;
     },
     async sendText() {
-      console.log(this.textValue);
       document.getElementById('textbox').style.animation = "fadeOut 1s";
 
       if (this.textValue < 0) {
         return;
       }
+
+      this.disabled = true;
 
       let check = getText(this.textValue);
 
@@ -153,7 +154,7 @@ export default {
           dangerouslyAllowBrowser: true
         });
 
-        let wrapper = "answer the following in 12 words or less: " + this.textValue;
+        let wrapper = "answer the following in 10 words or less: " + this.textValue;
 
         const completion = await openai.chat.completions.create({
           messages: [{role: "user", content: wrapper}],

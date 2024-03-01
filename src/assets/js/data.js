@@ -30,9 +30,6 @@ export function getText(value) {
 }
 
 function processData(value, data) {
-
-    console.log(value + " " + data);
-
     switch (data) {
         case "findCommand":
         case "killCommand":
