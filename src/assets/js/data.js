@@ -1,6 +1,7 @@
 let data = {
     "^(good)\\s(morning|afternoon|evening)$": "what are your commands?|how can i help you?|what do you need?",
     "^(hi|hello|greetings)$": "hello|hi",
+    "test": "test|what are you testing|what",
     "^(good)\\s(night|bye)$": "goodbye|bye|farewell",
     "^(goodbye|bye|farewell)$": "goodbye|bye|farewell",
     "^(find|locate)\\s(john|harold|sameen|samantha|the)\\s(reese|finch|shaw|groves|machine)$": "findCommand",
@@ -13,10 +14,6 @@ let commandData = {
     "(kill|eliminate)": "eliminate|assets dispatched for|destroy",
     "(identify)": "unknown",
 };
-
-export function checkData() {
-    getText("find the machine");
-}
 
 export function getText(value) {
     let regex;
