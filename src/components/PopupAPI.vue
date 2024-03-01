@@ -1,8 +1,8 @@
 <template>
 
-  <div class="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
+  <div class="fixed inset-0 z-50 flex items-center justify-center animate-fade-in p-2">
 
-    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-auto">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-auto max-h-modal-content overflow-y-auto scrollbar-hide">
 
       <div class="flex flex-col items-center">
         <h2 class="text-lg font-semibold mb-4">Samaritan v1.1</h2>
@@ -85,6 +85,17 @@ export default {
 </script>
 
 <style scoped>
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .box {
   @apply w-full px-3 py-2 border border-accent rounded-lg focus:outline-none bg-background text-gray-600 hover:border-accent;
 }

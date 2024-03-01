@@ -8,6 +8,10 @@ module.exports = {
                 accent: '#ff0023',
                 accentFaded: '#ff002333',
             },
+            maxHeight: {
+                'modal': '100vh',
+                'modal-content': '80vh',
+            },
             animation: {
                 'fade': 'fade 700ms ease-in-out infinite',
                 'gentle-fade': 'fade 2100ms ease-in-out infinite',
